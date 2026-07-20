@@ -1,0 +1,62 @@
+
+ Building a Cat RAG Chatbot with Streamlit
+ 
+  The Process Flow
+The system logic flows naturally across these 6 automated layers:
+
+[Live Web Scraping] ➔ [Load Datasets] ➔ [Generate Embeddings] ➔ 
+[Store In Vector DB] ➔ [Retrieve via Similarity] ➔ [LLM Response Generation]
+
+
+ Step 1: Project Setup & Environment
+
+
+  Directory Layout
+
+
+* scraper.py — Dynamic data collection from Wikipedia API.
+* rag.py — Core retrieval and generation pipelines.
+* app.py — Streamlit interactive web user interface. [2] 
+
+
+
+Virtual Environment Activation
+
+# Create and activate local virtual environment
+python -m venv venv
+
+.\venv\Scripts\activate
+
+install requirments 
+
+
+
+Step 2: Core RAG Pipeline Implementation (rag.py)
+
+
+* Setup & Configurations: Loads environment variables and authenticates the API communication clients for Hugging Face and Groq Cloud (llama-3.3-70b-versatile). 
+* Load Dataset: Reads local factual texts, aggregates inputs from Wikipedia outputs, and automatically tokenizes/splits raw sentences into clean knowledge units.
+* Vector Embedding: Converts raw text strings into semantic, multidimensional mathematical number arrays (vectors) using Hugging Face models. [4] 
+* Semantic Retrieval: Compares the mathematical vector of the user's question against the memory database using Cosine Similarity to isolate the top 5 most relevant facts.
+* Grounded Generation: Injects the extracted knowledge contexts directly into a strict, anti-hallucination prompt, instructing the language model to write a factual chatbot answer. [5] 
+
+
+ Local Component Verification: Run python rag.py in the terminal to debug and test the back-end processing alone.
+
+
+Step 3: Automated Web Knowledge Harvesting (scraper.py)
+
+Run the scraper script to dynamically pull deep medical, historical, and behavioral cat articles from the web:
+
+python scraper.py
+
+This fetches live Wikipedia plain-text extracts, cuts them into regular sentences, and exports them cleanly to a local file.
+
+
+
+Step 4: Streamlit Frontend Interface (app.py)
+Launch the production web interface to start chatting natively with your fully custom RAG brain:
+
+streamlit run app.py
+
+Features include automatic caching mechanisms (@st.cache_resource) to build embeddings only once, chat message preservation, and a source context debugger. [6] 
