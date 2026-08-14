@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 from huggingface_hub import InferenceClient
 from openai import OpenAI
  
-# ---------- Setup ----------
+# Setup 
 load_dotenv()
  
 EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"  # small, fast, well-supported
@@ -23,7 +23,8 @@ llm_client = OpenAI(
 )
  
  
-# ---------- 1. Load dataset ----------
+# 1. Load dataset
+
 def load_dataset():
     """Load and clean facts from both the hand-written and Wikipedia-scraped files."""
     chunks = []
@@ -61,7 +62,7 @@ def load_dataset():
     return unique_chunks
  
  
-# ---------- 2. Embeddings ----------
+#  2. Embeddings
 def get_embedding(text):
     vector = hf_client.feature_extraction(text, model=EMBEDDING_MODEL)
     vector = np.array(vector)
@@ -83,7 +84,7 @@ def build_vector_db(chunks, max_retries=5):
     global VECTOR_DB
     VECTOR_DB = []
     skipped = 0  
-    print(f"🧬 Starting to embed {len(chunks)} chunks... Please watch the terminal.")
+    print(f"Starting to embed {len(chunks)} chunks... Please watch the terminal.")
  
     for i, chunk in enumerate(chunks):
         embedding = None
@@ -115,7 +116,7 @@ def build_vector_db(chunks, max_retries=5):
     return VECTOR_DB
 
  
-# ---------- 3. Retrieval ----------
+# 3. Retrieval
 def cosine_similarity(a, b):
     return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
  
@@ -162,7 +163,7 @@ Facts:
         return f"Error generating response: {e}"
  
  
-# ---------- Quick test ----------
+# Quick test
 if __name__ == "__main__":
     dataset = load_dataset()
     build_vector_db(dataset)

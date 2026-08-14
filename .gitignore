@@ -8,3 +8,10 @@ __pycache__/
 # Ignore IDE files
 .vscode/
 .idea/
+
+# Ignore Streamlit secrets (local only)
+.streamlit/secrets.toml
+
+# Ignore virtual environment
+venv/
+env/
